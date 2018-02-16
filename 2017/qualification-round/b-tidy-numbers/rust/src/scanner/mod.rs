@@ -1,4 +1,5 @@
 use std::io;
+use std::num;
 
 #[derive(Debug)]
 pub struct Scanner {
@@ -24,4 +25,8 @@ impl Scanner {
             .parse::<i32>()
             .unwrap()
     }
+}
+
+pub fn foo() -> Result<i32, num::ParseIntError> {
+    String::from("42").parse()
 }

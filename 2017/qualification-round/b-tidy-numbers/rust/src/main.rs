@@ -5,10 +5,6 @@ mod gcj;
 mod scanner;
 
 use std::io;
-use std::io::{Read};
-
-#[derive(Debug)]
-struct MyError;
 
 fn main() {
     // let capacity = 2500;
@@ -33,5 +29,6 @@ fn main() {
 
     let v: Vec<&str> = vec![];
     let primeiro = v.first();
+    scanner::foo().unwrap();
     println!("Primeiro elemento: {:?}", primeiro);
 }
