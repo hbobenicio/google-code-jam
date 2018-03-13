@@ -1,34 +1,52 @@
 #[allow(dead_code)]
 #[allow(unused_imports)]
 
-mod gcj;
-mod scanner;
-
 use std::io;
 
+struct Num {
+    integer: i32,
+    string: String,
+}
+
+impl Num {
+
+    fn from_integer(x: i32) -> Num {
+        Num {
+            integer: x,
+            string: x.to_string()
+        }
+    }
+
+    fn from_string(str: &str) -> Num {
+        Num {
+            integer: str.parse::<i32>().unwrap(),
+            string: String::from(str)
+        }
+    }
+}
+
+fn is_tidy(num_str: &String) -> bool {
+    unimplemented!();
+}
+
+fn find_max_tidy(num: &Num) {
+    unimplemented!();
+}
+
 fn main() {
-    // let capacity = 2500;
-    // let mut data = String::with_capacity(capacity);
+    // The line buffer
+    let mut line = String::with_capacity(100);
 
-    // io::stdin()
-    //     .read_to_string(&mut data).unwrap();
+    // Reads T (Number of Test Cases)
+    io::stdin().read_line(&mut line).unwrap();
+    let t: i32 = line.trim().parse::<i32>().unwrap();
 
-    // let mut lines = data.lines();
-    // let _t = lines
-    //     .next().unwrap()
-    //     .parse::<i32>().unwrap();
+    for _ in 0..t {
+        // Reads the ith number. Casting it to Num object
+        // (which acts like unions...)
+        io::stdin().read_line(&mut line).unwrap();
+        let num = Num::from_string(line.trim());
 
-    // for (i, line) in lines.enumerate() {
-    //     let n = line.parse::<u64>().unwrap();
-    //     println!("Case #{}: {}", i, n);
-    // };
-
-    // let mut scanner = scanner::Scanner::new(2500);
-    // let x: i32 = scanner.from_stdio_get_i32();
-    // println!("{:?}", x);
-
-    let v: Vec<&str> = vec![];
-    let primeiro = v.first();
-    scanner::foo().unwrap();
-    println!("Primeiro elemento: {:?}", primeiro);
+        find_max_tidy(&num);
+    }
 }
