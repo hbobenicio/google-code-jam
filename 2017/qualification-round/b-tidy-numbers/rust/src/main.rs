@@ -3,6 +3,7 @@
 
 use std::io;
 
+#[derive(Debug, Clone)]
 struct Num {
     integer: i32,
     string: String,
@@ -17,20 +18,42 @@ impl Num {
         }
     }
 
-    fn from_string(str: &str) -> Num {
+    fn from_string(s: &str) -> Num {
         Num {
-            integer: str.parse::<i32>().unwrap(),
-            string: String::from(str)
+            integer: s.parse::<i32>().unwrap(),
+            string: String::from(s)
         }
+    }
+
+    fn is_tidy(&self) -> bool {
+        for i in 0..self.string.len()-1 {
+            let j = i + 1;
+            let x = self.string.get(i..i+1).unwrap();
+            let y = self.string.get(j..j+1).unwrap();
+            let xi = x.parse::<i32>().unwrap();
+            let yi = y.parse::<i32>().unwrap();
+
+            if xi > yi {
+                return false
+            }
+        }
+        true
     }
 }
 
-fn is_tidy(num_str: &String) -> bool {
-    unimplemented!();
-}
-
 fn find_max_tidy(num: &Num) {
-    unimplemented!();
+    // if num.string.len() <= 1 || is_tidy(num) {
+    //     println!("{}", num.integer);
+    // } else {
+    //     find_max_tidy(&Num::from_integer(num.integer - 1));
+    // }
+
+    let mut x: Num = num.clone();
+    while !x.is_tidy() {
+        x = Num::from_integer(x.integer - 1);
+    }
+
+    println!("{}", x.integer);
 }
 
 fn main() {
@@ -42,6 +65,8 @@ fn main() {
     let t: i32 = line.trim().parse::<i32>().unwrap();
 
     for _ in 0..t {
+        line.clear();
+
         // Reads the ith number. Casting it to Num object
         // (which acts like unions...)
         io::stdin().read_line(&mut line).unwrap();
