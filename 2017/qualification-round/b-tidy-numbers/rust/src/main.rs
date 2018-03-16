@@ -1,77 +1,46 @@
 #[allow(dead_code)]
 #[allow(unused_imports)]
 
+mod tidy;
+
 use std::io;
-
-#[derive(Debug, Clone)]
-struct Num {
-    integer: i32,
-    string: String,
-}
-
-impl Num {
-
-    fn from_integer(x: i32) -> Num {
-        Num {
-            integer: x,
-            string: x.to_string()
-        }
-    }
-
-    fn from_string(s: &str) -> Num {
-        Num {
-            integer: s.parse::<i32>().unwrap(),
-            string: String::from(s)
-        }
-    }
-
-    fn is_tidy(&self) -> bool {
-        for i in 0..self.string.len()-1 {
-            let j = i + 1;
-            let x = self.string.get(i..i+1).unwrap();
-            let y = self.string.get(j..j+1).unwrap();
-            let xi = x.parse::<i32>().unwrap();
-            let yi = y.parse::<i32>().unwrap();
-
-            if xi > yi {
-                return false
-            }
-        }
-        true
-    }
-}
-
-fn find_max_tidy(num: &Num) {
-    // if num.string.len() <= 1 || is_tidy(num) {
-    //     println!("{}", num.integer);
-    // } else {
-    //     find_max_tidy(&Num::from_integer(num.integer - 1));
-    // }
-
-    let mut x: Num = num.clone();
-    while !x.is_tidy() {
-        x = Num::from_integer(x.integer - 1);
-    }
-
-    println!("{}", x.integer);
-}
+use tidy::TidyEnum::*;
 
 fn main() {
+    // Algorithm:
+    // 1. Traverse the input string to find the "slope-down" index
+    // 2.   if this index == string.len(), then it's a tidy number. just print it
+    // 3. While char(i-1) == char(i), i--. Let's call it "updated-slopw-down" index.
+    //    (shift left the index while there are equal numbers on the left)
+    // 4. With this new index, get the higher tidy number lower then the input value by:
+    //   4.1. Decrease the algorism at this index by 1
+    //   4.2. Set all the algorisms on the right of this index to '9'
+    // 5. Cast it to number and print (to get rid of left zeros)
+
     // The line buffer
     let mut line = String::with_capacity(100);
 
     // Reads T (Number of Test Cases)
     io::stdin().read_line(&mut line).unwrap();
-    let t: i32 = line.trim().parse::<i32>().unwrap();
+    let t = line.trim().parse::<u8>().unwrap();
 
     for _ in 0..t {
+        // Clears the data of the next read_line, but preserves its capacity
         line.clear();
 
-        // Reads the ith number. Casting it to Num object
-        // (which acts like unions...)
+        // Reads the ith number
         io::stdin().read_line(&mut line).unwrap();
-        let num = Num::from_string(line.trim());
 
-        find_max_tidy(&num);
+        // Casting the line to a Vec of algorisms
+        let algorisms = tidy::str_to_vec(line.trim());
+
+        // Check if it's a tidy number or not.
+        // If it's not, gives you also the index of the first "slope-down" index
+        match tidy::tidy_check(&algorisms) {
+            Tidy => println!("{}", line.trim()),
+            NotTidy(i) => {
+                println!("{:?}", tidy::cast_previous_tidy(&algorisms, i));
+            }
+        };
     }
 }
