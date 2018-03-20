@@ -1,7 +1,6 @@
 #[allow(dead_code)]
 #[allow(unused_imports)]
 
-mod pair;
 mod tidy;
 
 use std::io;
@@ -25,7 +24,7 @@ fn main() {
     io::stdin().read_line(&mut line).unwrap();
     let t = line.trim().parse::<u8>().unwrap();
 
-    for _ in 0..t {
+    for x in 0..t {
         // Clears the data of the next read_line, but preserves its capacity
         line.clear();
 
@@ -38,10 +37,10 @@ fn main() {
         // Check if it's a tidy number or not.
         // If it's not, gives you also the index of the first "slope-down" index
         match tidy::tidy_check(&algorisms) {
-            Tidy => println!("{}", line.trim()),
-            NotTidy(i) => {
-                println!("{:?}", tidy::cast_previous_tidy(&algorisms, i));
-            }
+            Tidy =>
+                println!("Case #{}: {}", x+1, line.trim()),
+            NotTidy(i) =>
+                println!("Case #{}: {}", x+1, tidy::cast_previous_tidy(&algorisms, i))
         };
     }
 }
