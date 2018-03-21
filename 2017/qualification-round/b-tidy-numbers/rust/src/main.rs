@@ -2,20 +2,28 @@
 #[allow(unused_imports)]
 
 mod tidy;
+mod gcj;
 
 use std::io;
-use tidy::TidyEnum::*;
 
+/// # [Tidy Numbers](https://code.google.com/codejam/contest/3264486/dashboard#s=p1)
+///
+/// ## Contest
+///
+/// Qualification Round 2017
+///
+/// ## Algorithm Description
+///
+/// Algorithm:
+/// 1. Traverse the input string to find the "slope-down" index
+/// 2.   if this index == string.len(), then it's a tidy number. just print it
+/// 3. While char(i-1) == char(i), i--. Let's call it "updated-slopw-down" index.
+///    (shift left the index while there are equal numbers on the left)
+/// 4. With this new index, get the higher tidy number lower then the input value by:
+///   4.1. Decrease the algorism at this index by 1
+///   4.2. Set all the algorisms on the right of this index to '9'
+/// 5. Cast it to number and print (to get rid of left zeros)
 fn main() {
-    // Algorithm:
-    // 1. Traverse the input string to find the "slope-down" index
-    // 2.   if this index == string.len(), then it's a tidy number. just print it
-    // 3. While char(i-1) == char(i), i--. Let's call it "updated-slopw-down" index.
-    //    (shift left the index while there are equal numbers on the left)
-    // 4. With this new index, get the higher tidy number lower then the input value by:
-    //   4.1. Decrease the algorism at this index by 1
-    //   4.2. Set all the algorisms on the right of this index to '9'
-    // 5. Cast it to number and print (to get rid of left zeros)
 
     // The line buffer
     let mut line = String::with_capacity(100);
@@ -24,23 +32,24 @@ fn main() {
     io::stdin().read_line(&mut line).unwrap();
     let t = line.trim().parse::<u8>().unwrap();
 
-    for x in 0..t {
-        // Clears the data of the next read_line, but preserves its capacity
-        line.clear();
+    // let stdin = io::stdin();
+    // for (i, s) in stdin.lock().lines().map(|l| l.unwrap()).enumerate() {
+    //     println!("Case #{}: {}", i + 1, tidy::solve(&s));
+    // }
 
-        // Reads the ith number
-        io::stdin().read_line(&mut line).unwrap();
+    // for test_case in 1..t+1 {
+    //     // Clears the data of the next read_line, but preserves its capacity
+    //     line.clear();
+    //
+    //     // Reads the ith number
+    //     io::stdin().read_line(&mut line).unwrap();
+    //
+    //     println!("Case #{}: {}", test_case, tidy::solve(line.trim()));
+    // }
 
-        // Casting the line to a Vec of algorisms
-        let algorisms = tidy::str_to_vec(line.trim());
+    let scanner = gcj::io::Scanner::with_capacity(100);
 
-        // Check if it's a tidy number or not.
-        // If it's not, gives you also the index of the first "slope-down" index
-        match tidy::tidy_check(&algorisms) {
-            Tidy =>
-                println!("Case #{}: {}", x+1, line.trim()),
-            NotTidy(i) =>
-                println!("Case #{}: {}", x+1, tidy::cast_previous_tidy(&algorisms, i))
-        };
-    }
+    scanner.all_lines(|(i, line)|
+        println!("Case #{}: {}", i, tidy::solve(line.trim()))
+    )
 }

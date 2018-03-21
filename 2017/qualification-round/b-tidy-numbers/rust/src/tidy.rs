@@ -1,3 +1,7 @@
+//! Tidy
+//!
+//! TODO - Document this module
+
 use std::char;
 
 pub enum TidyEnum {
@@ -9,6 +13,20 @@ pub enum TidyEnum {
 //     Tidy,
 //     NotTidy {i: u8}
 // }
+
+use self::TidyEnum::{Tidy, NotTidy};
+
+pub fn solve(line: &str) -> String {
+    // Casting the line to a Vec of algorisms
+    let algorisms: Vec<u8> = str_to_vec(line);
+
+    // Check if it's a tidy number or not.
+    // If it's not, gives you also the index of the first "slope-down" index
+    match tidy_check(&algorisms) {
+        Tidy => String::from(line),
+        NotTidy(i) => cast_previous_tidy(&algorisms, i)
+    }
+}
 
 fn char_to_digit(c: char) -> u8 {
     c.to_digit(10)
