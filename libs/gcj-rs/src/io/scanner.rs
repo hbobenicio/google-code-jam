@@ -1,6 +1,7 @@
 use std::io;
 use std::io::prelude::BufRead;
 
+#[derive(Debug)]
 pub struct Scanner {
     stdin: io::Stdin,
     capacity: usize
@@ -28,7 +29,7 @@ impl Scanner {
             .read_line(&mut line)
             .expect("Error while reading line from stdin");
 
-        line
+        String::from(line.trim())
     }
 
     /// Reads all lines from stdin.

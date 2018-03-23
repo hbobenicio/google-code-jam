@@ -1,10 +1,12 @@
-mod gcj;
+pub mod io;
 
 #[cfg(test)]
 mod tests {
 
+    use io::Scanner;
+
     #[test]
     fn it_works() {
-        let scanner = gcj::io::Scanner::new();
+        let scanner = Scanner::new();
     }
 }
