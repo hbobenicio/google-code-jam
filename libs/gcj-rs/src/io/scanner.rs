@@ -4,32 +4,43 @@ use std::io::prelude::BufRead;
 #[derive(Debug)]
 pub struct Scanner {
     stdin: io::Stdin,
-    capacity: usize
+    capacity: usize,
+    str_buffer: String
 }
 
 impl Scanner {
     pub fn new() -> Scanner {
         Scanner {
             stdin: io::stdin(),
-            capacity: 0
+            capacity: 0,
+            str_buffer: String::new()
         }
     }
 
     pub fn with_capacity(capacity: usize) -> Scanner {
         Scanner {
             stdin: io::stdin(),
-            capacity
+            capacity,
+            str_buffer: String::with_capacity(capacity)
         }
     }
 
-    pub fn read_line(&self) -> String {
-        let mut line = String::with_capacity(self.capacity);
+    pub fn read_line(&mut self) -> String {
+        self.str_buffer.clear();
 
         self.stdin
-            .read_line(&mut line)
+            .read_line(&mut self.str_buffer)
             .expect("Error while reading line from stdin");
 
-        String::from(line.trim())
+        String::from(self.str_buffer.trim())
+    }
+
+    pub fn read_line2(&mut self) -> Result<String, io::Error> {
+        self.str_buffer.clear();
+
+        self.stdin.read_line(&mut self.str_buffer)?;
+
+        Ok(String::from(self.str_buffer.trim()))
     }
 
     /// Reads all lines from stdin.

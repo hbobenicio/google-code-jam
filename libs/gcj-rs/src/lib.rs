@@ -3,6 +3,7 @@ pub mod io;
 #[cfg(test)]
 mod tests {
 
+    use std::io;
     use io::Scanner;
 
     #[test]

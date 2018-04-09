@@ -2,13 +2,9 @@
 use std::io::{self, BufRead};
 
 mod stall;
+mod input;
 
-#[derive(Debug)]
-struct Input {
-    i: u64,
-    n: u64,
-    k: u64
-}
+use input::Input;
 
 fn test_case(input: Input) {
     let (y, z) = solve(&input);
@@ -29,13 +25,11 @@ fn main() {
     let stdin = io::stdin();
     let mut line_buffer = String::with_capacity(100);
 
-    stdin.read_line(&mut line_buffer).expect("Error while reading from stdin");
+    stdin.read_line(&mut line_buffer).expect("Error while reading line from stdin");
     let t = line_buffer.trim().parse::<u64>().expect("Error while parsing u64 from line");
 
     for i in 1..t+1 {
-        // line_buffer.clear();
-
-        stdin.lock().read_line(&mut line_buffer).unwrap();
+        stdin.lock().read_line(&mut line_buffer).expect("Error while reading line from stdin");
 
         let mut split_iter = line_buffer.trim().split_whitespace();
         let n = split_iter.next()
